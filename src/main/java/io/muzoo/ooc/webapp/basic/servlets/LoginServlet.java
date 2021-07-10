@@ -1,5 +1,7 @@
 package io.muzoo.ooc.webapp.basic.servlets;
 
+import io.muzoo.ooc.webapp.basic.AbstractRoutableHttpServlet;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,15 +21,13 @@ public class LoginServlet extends AbstractRoutableHttpServlet {
         String error = "";
         // authentication
         if (securityService.login(request)) {
-            response.sendRedirect("/");
+            response.sendRedirect("/user");
         } else {
             error = "Username or password incorrect. Please try again.";
-
             request.setAttribute("error", error);
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("WEB-INF/login.jsp");
             requestDispatcher.include(request, response);
         }
-
     }
 
     @Override
