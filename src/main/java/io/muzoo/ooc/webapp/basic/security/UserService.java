@@ -1,25 +1,37 @@
 package io.muzoo.ooc.webapp.basic.security;
 
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class UserService {
 
-    private Map<String, User> users = new HashMap<>();
+    private MySql mySql = new MySql();
 
-    {
-        users.put("gigadot", new User("gigadot", "12345"));
-        users.put("admin", new User("admin", "12345"));
+    public void addUser(String username, String password, String email, String firstName, String lastName) {
+        mySql.insert(username, password, email, firstName, lastName);
     }
 
-    public User findByUsername(String username) {
-        return users.get(username);
+    public void removeUser(String username) {
+        mySql.delete(username);
+    }
+
+    public void editUser(String username, String password, String email, String firstName, String lastName) {
+        mySql.update(username, password, email, firstName, lastName);
+    }
+
+    public List<User> getUsers() {
+        return mySql.getUsers();
+    }
+
+    public User getUser(String username) {
+        for (User user : getUsers()) {
+            if (user.getUsername().equals(username)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public boolean checkIfUserExists(String username) {
-        return users.containsKey(username);
+        return getUser(username) != null;
     }
-
-
 }
